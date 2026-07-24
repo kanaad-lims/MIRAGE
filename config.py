@@ -14,4 +14,4 @@ COLLECTION_NAME = "mirage_image_collection"
 
 TOP_N_CANDIDATES = 20   # candidates pulled before rerank
 CAPTION_WEIGHT = 0.4
-CLIP_WEIGHT = 0.7
+CLIP_WEIGHT = 0.6
