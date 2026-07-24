@@ -1,8 +1,8 @@
+import spaces
 import os
 import gradio as gr
 from retriever.query_engine import QueryEngine
 import config
-import spaces
 
 # Initialize query engine
 engine = QueryEngine()
