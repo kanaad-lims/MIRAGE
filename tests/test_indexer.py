@@ -4,9 +4,6 @@ import time
 from PIL import Image
 from dotenv import load_dotenv
 
-# Incase of HF outage we use cached embedder and fashion-clip
-os.environ["HF_HUB_OFFLINE"] = "1"
-os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
 # Add parent directory to path so we can import config and indexer modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
