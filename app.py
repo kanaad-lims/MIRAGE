@@ -2,9 +2,13 @@ import os
 import gradio as gr
 from retriever.query_engine import QueryEngine
 import config
+import spaces
 
 # Initialize query engine
 engine = QueryEngine()
+
+# Adding ZeroGPU decorator for HF spaces
+@spaces.GPU
 
 def search_interface(query, caption_weight, clip_weight, k):
     # Apply selected weights to configuration
