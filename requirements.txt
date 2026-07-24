@@ -1,0 +1,8 @@
+moondream
+torch
+chromadb
+sentence-transformers
+transformers
+pillow
+tqdm
+python-dotenv
