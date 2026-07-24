@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIRAGE Documentation — Multimodal Image Retrieval & Grounding Engine</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0d0f14;
+            --card-bg: rgba(22, 28, 45, 0.4);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --secondary: #14b8a6;
+            --accent: #ec4899;
+            --font-title: 'Space Grotesk', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(20, 184, 166, 0.05) 0%, transparent 40%);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav {
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 15, 20, 0.8);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4.5rem;
+        }
+        .logo {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+            text-decoration: none;
+            background: linear-gradient(to right, var(--text-main), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .github-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            color: var(--text-main) !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .github-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .hero {
+            padding: 6rem 0 4rem 0;
+            text-align: center;
+            position: relative;
+        }
+        .hero-title {
+            font-family: var(--font-title);
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .hero-title span {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-tagline {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2.5rem auto;
+            font-weight: 400;
+        }
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 0.35rem 0.85rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+        }
+        .badge i {
+            color: var(--primary);
+        }
+
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section-title i {
+            color: var(--secondary);
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+        }
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .step-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .step-item {
+            display: flex;
+            gap: 1rem;
+        }
+        .step-num {
+            background: rgba(20, 184, 166, 0.1);
+            color: var(--secondary);
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .step-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-main);
+        }
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .diagram-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-top: 1.5rem;
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            width: 100%;
+            max-width: 320px;
+        }
+        .flow-node {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            position: relative;
+        }
+        .flow-node.highlight {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        .flow-arrow {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin: -0.5rem 0;
+        }
+
+        .terminal {
+            background: #06070a;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            position: relative;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #eab308; }
+        .dot-green { background: #22c55e; }
+        .terminal-line {
+            color: #38bdf8;
+            margin-bottom: 0.5rem;
+        }
+        .terminal-line span {
+            color: var(--text-main);
+        }
+        .copy-hint {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .copy-hint:hover {
+            color: var(--primary);
+        }
+
+        .tabs-section {
+            margin: 5rem 0;
+        }
+        .tabs-header {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-muted);
+            font-family: var(--font-title);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-container {
+            background: #06070a;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            max-height: 480px;
+        }
+        .code-block {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #d1d5db;
+            white-space: pre;
+        }
+        .code-keyword { color: #f472b6; }
+        .code-string { color: #34d399; }
+        .code-comment { color: #6b7280; font-style: italic; }
+        .code-func { color: #60a5fa; }
+        .code-import { color: #fb7185; }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5rem;
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-cloud-moon"></i> MIRAGE
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#get-started">Get Started</a></li>
+                <li><a href="#implementation">Implementation</a></li>
+                <li><a href="https://github.com/kanaad-lims/mirage.git" class="github-btn"><i class="fa-brands fa-github"></i> Star on GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Multimodal Image Retrieval &<br><span>Attribute-Grounded Engine</span></h1>
+            <p class="hero-tagline">An open-vocabulary, context-aware image search engine utilizing VLM dense captioning (Moondream) and CLIP visual reranking to solve compositional attribute binding.</p>
+            
+            <div class="hero-badges">
+                <div class="badge"><i class="fa-solid fa-code-branch"></i> Version 1.0.0</div>
+                <div class="badge"><i class="fa-solid fa-brain"></i> Moondream 2 VLM</div>
+                <div class="badge"><i class="fa-solid fa-eye"></i> OpenAI CLIP</div>
+                <div class="badge"><i class="fa-solid fa-database"></i> ChromaDB (HNSW)</div>
+                <div class="badge"><i class="fa-solid fa-certificate"></i> MIT License</div>
+            </div>
+        </section>
+
+        <!-- About/Architecture Section -->
+        <section id="about" style="margin-bottom: 5rem;">
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="section-title"><i class="fa-solid fa-gears"></i> The Dual-Stage Pipeline</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        Traditional CLIP models often suffer from the <strong>compositional binding problem</strong>—failing to associate specific attributes with nouns (e.g. matching "red cup and blue plate"). 
+                    </p>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        MIRAGE solves this by decoupling the search into a two-stage process:
+                    </p>
+                    <ul class="step-list">
+                        <li class="step-item">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>VLM Dense Captioning (Coarse Filter)</h4>
+                                <p>Ingests images and uses a Vision-Language Model to write semantic descriptors. Standard dense retrieval isolates candidates with correct grammar/color binding.</p>
+                            </div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>CLIP Visual Grounding (Reranker)</h4>
+                                <p>Scores the top-N candidates against the query vector in CLIP's joint-embedding space to compute exact pixel alignments, fusing both scores for final ranking.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 class="section-title"><i class="fa-solid fa-bezier-curve"></i> Architecture Visualization</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                            The query travels through both a semantic text vector path and a visual text encoder path before joining in a weighted fusion layer.
+                        </p>
+                    </div>
+                    <div class="diagram-box">
+                        <div class="flowchart">
+                            <div class="flow-node highlight">User Text Query</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-node">SentenceTransformer (384d)</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-node">ChromaDB HNSW Inverted Index</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-node">Top-N Candidates (Filter)</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-node">OpenAI CLIP Visual Reranking</div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                            <div class="flow-node highlight">Weighted Score Fusion (Output)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Start / Get Started Section -->
+        <section id="get-started" style="margin-bottom: 5rem;">
+            <h3 class="section-title"><i class="fa-solid fa-terminal"></i> Quick Start Guide</h3>
+            
+            <div class="card" style="margin-bottom: 2rem;">
+                <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-chevron-right" style="color: var(--secondary); margin-right: 0.5rem;"></i> 1. Clone & Install Dependencies</h4>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <div class="copy-hint" onclick="copyToClipboard('setup-code')"><i class="fa-regular fa-copy"></i> Copy</div>
+                    <code id="setup-code" style="white-space: pre-line; display: block; color: #a5f3fc;">
+                        git clone https://github.com/kanaad-lims/mirage.git
+                        cd mirage
+                        pip install -r requirements.txt
+                    </code>
+                </div>
+                
+                <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-chevron-right" style="color: var(--secondary); margin-right: 0.5rem;"></i> 2. Configure Environment Keys</h4>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Create a <code>.env</code> file in the project root and add your Moondream VLM API Key:</p>
+                <div class="terminal">
+                    <code style="color: #34d399;">MOONDREAM_API_KEY=your_api_key_here</code>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-upload" style="color: var(--primary); margin-right: 0.5rem;"></i> 3. Index Your Images</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Place your images (e.g. <code>.jpg</code>, <code>.png</code>) inside the <code>data/images/</code> folder and run the builder script. Features are cached automatically for skip/resume resilience.</p>
+                    <div class="terminal" style="margin-bottom: 0;">
+                        <code style="color: #c084fc;">python -m indexer.build_index</code>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h4 style="margin-bottom: 1rem;"><i class="fa-solid fa-magnifying-glass" style="color: var(--primary); margin-right: 0.5rem;"></i> 4. Search via Natural Language</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Search your visual collection using the retriever CLI. The script stitches matching results into a horizontal preview grid.</p>
+                    <div class="terminal" style="margin-bottom: 0;">
+                        <code style="color: #c084fc;">python -m retriever.search a red coffee mug on a white desk</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code/Implementation Section -->
+        <section id="implementation" class="tabs-section">
+            <h3 class="section-title"><i class="fa-solid fa-code"></i> Implementation Details</h3>
+            
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-config')">config.py</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-embedder')">indexer/embedder.py</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-query')">retriever/query_engine.py</button>
+            </div>
+
+            <!-- Tab: config.py -->
+            <div id="tab-config" class="tab-content active">
+                <div class="code-container">
+                    <div class="code-block"><span class="code-import">import</span> os
+<span class="code-import">from</span> dotenv <span class="code-import">import</span> load_dotenv
+
+<span class="code-comment"># Load variables from .env</span>
+load_dotenv()
+
+MOONDREAM_API_KEY = os.getenv(<span class="code-string">"MOONDREAM_API_KEY"</span>)
+
+<span class="code-comment"># Models Specifications</span>
+TEXT_EMBED_MODEL = <span class="code-string">"all-MiniLM-L6-v2"</span>
+CLIP_MODEL = <span class="code-string">"openai/clip-vit-base-patch32"</span> <span class="code-comment"># General-purpose CLIP</span>
+
+<span class="code-comment"># Workspace Paths</span>
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+IMAGES_DIR = os.path.join(BASE_DIR, <span class="code-string">"data"</span>, <span class="code-string">"images"</span>)
+CHROMA_DIR = os.path.join(BASE_DIR, <span class="code-string">"data"</span>, <span class="code-string">"chroma_db"</span>)
+COLLECTION_NAME = <span class="code-string">"mirage_image_collection"</span>
+
+<span class="code-comment"># Search parameters (Score Fusion Weights)</span>
+TOP_N_CANDIDATES = <span class="code-number">20</span>
+CAPTION_WEIGHT = <span class="code-number">0.3</span>
+CLIP_WEIGHT = <span class="code-number">0.7</span></div>
+                </div>
+            </div>
+
+            <!-- Tab: embedder.py -->
+            <div id="tab-embedder" class="tab-content">
+                <div class="code-container">
+                    <div class="code-block"><span class="code-import">import</span> torch
+<span class="code-import">from</span> transformers <span class="code-import">import</span> CLIPProcessor, CLIPModel
+<span class="code-import">from</span> sentence_transformers <span class="code-import">import</span> SentenceTransformer
+<span class="code-import">from</span> config <span class="code-import">import</span> TEXT_EMBED_MODEL, CLIP_MODEL
+
+device = <span class="code-string">"cuda"</span> <span class="code-keyword">if</span> torch.cuda.is_available() <span class="code-keyword">else</span> <span class="code-string">"cpu"</span>
+
+<span class="code-comment"># Initialize models in GPU/CPU</span>
+_text_model = SentenceTransformer(TEXT_EMBED_MODEL, device=device)
+_clip_model = CLIPModel.from_pretrained(CLIP_MODEL).to(device)
+_clip_processor = CLIPProcessor.from_pretrained(CLIP_MODEL)
+
+<span class="code-keyword">def</span> <span class="code-func">embed_caption</span>(caption: str):
+    <span class="code-comment">"""Encodes caption text using SentenceTransformer"""</span>
+    <span class="code-keyword">return</span> _text_model.encode(caption).tolist()
+
+<span class="code-keyword">def</span> <span class="code-func">embed_query_text</span>(text: str):
+    <span class="code-comment">"""Encodes query string into standard CLIP text-space"""</span>
+    inputs = _clip_processor(text=[text], return_tensors=<span class="code-string">"pt"</span>, padding=<span class="code-keyword">True</span>).to(device)
+    <span class="code-keyword">with</span> torch.no_grad():
+        feats = _clip_model.get_text_features(**inputs)
+    feats = feats / feats.norm(dim=-<span class="code-number">1</span>, keepdim=<span class="code-keyword">True</span>)
+    <span class="code-keyword">return</span> feats.squeeze().tolist()</div>
+                </div>
+            </div>
+
+            <!-- Tab: query_engine.py -->
+            <div id="tab-query" class="tab-content">
+                <div class="code-container">
+                    <div class="code-block"><span class="code-import">import</span> ast
+<span class="code-import">import</span> numpy <span class="code-import">as</span> np
+<span class="code-import">from</span> config <span class="code-import">import</span> TOP_N_CANDIDATES, CAPTION_WEIGHT, CLIP_WEIGHT
+<span class="code-import">from</span> indexer.embedder import embed_caption, embed_query_text
+
+<span class="code-keyword">def</span> <span class="code-func">_cosine</span>(a, b):
+    a, b = np.array(a), np.array(b)
+    <span class="code-keyword">return</span> float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+
+<span class="code-keyword">class</span> <span class="code-title">QueryEngine</span>:
+    <span class="code-keyword">def</span> <span class="code-func">search_images</span>(self, query: str, k: int = <span class="code-number">5</span>):
+        # Stage 1: Coarse-filter candidates in ChromaDB
+        results = self.store.query(embed_caption(query), n_results=TOP_N_CANDIDATES)
+        
+        query_text_emb = embed_query_text(query)
+        candidates = []
+        
+        # 2. Applying reranking on top_n images
+        # cosine -> Image embeddings and CLIP text embeddings (not semantic query embedding)
+        <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span class="code-func">range</span>(<span class="code-func">len</span>(results[<span class="code-string">"ids"</span>][<span class="code-number">0</span>])):
+            caption_score = <span class="code-number">1</span> - (results[<span class="code-string">"distances"</span>][<span class="code-number">0</span>][i] / <span class="code-number">2</span>)
+            clip_image_emb = ast.literal_eval(results[<span class="code-string">"metadatas"</span>][<span class="code-number">0</span>][i][<span class="code-string">"clip_embedding"</span>])
+            clip_score = _cosine(query_text_emb, clip_image_emb)
+
+            # Multi-modal score fusion
+            final_score = (CAPTION_WEIGHT * caption_score) + (CLIP_WEIGHT * clip_score)
+            candidates.append({
+                <span class="code-string">"image_path"</span>: results[<span class="code-string">"metadatas"</span>][<span class="code-number">0</span>][i][<span class="code-string">"image_path"</span>],
+                <span class="code-string">"score"</span>: final_score
+            })
+            
+        candidates.sort(key=<span class="code-keyword">lambda</span> x: x[<span class="code-string">"score"</span>], reverse=<span class="code-keyword">True</span>)
+        <span class="code-keyword">return</span> candidates[:k]</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>MIRAGE is an open-source project created by <a href="https://github.com/kanaad-lims">Kanaad</a>.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.65;">© 2026 MIRAGE. Released under the MIT License.</p>
+        </div>
+    </footer>
+
+    <!-- Copy & Tab Switching Logic -->
+    <script>
+        function switchTab(evt, tabId) {
+            let contents = document.querySelectorAll(".tab-content");
+            contents.forEach(content => content.classList.remove("active"));
+            
+            let buttons = document.querySelectorAll(".tab-btn");
+            buttons.forEach(btn => btn.classList.remove("active"));
+            
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function copyToClipboard(elementId) {
+            let text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Terminal commands copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy text: ", err);
+            });
+        }
+    </script>
+</body>
+</html>
