@@ -11,11 +11,11 @@ from sentence_transformers import SentenceTransformer
 from transformers import CLIPProcessor, CLIPModel
 from PIL import Image
 import torch
-from config import TEXT_EMBED_MODEL, FASHION_CLIP_MODEL
+from config import TEXT_EMBED_MODEL, CLIP_MODEL
 
 _text_model = SentenceTransformer(TEXT_EMBED_MODEL)
-_clip_model = CLIPModel.from_pretrained(FASHION_CLIP_MODEL)
-_clip_processor = CLIPProcessor.from_pretrained(FASHION_CLIP_MODEL)
+_clip_model = CLIPModel.from_pretrained(CLIP_MODEL)
+_clip_processor = CLIPProcessor.from_pretrained(CLIP_MODEL)
 
 def embed_caption(text: str) -> list[float]:
     return _text_model.encode(text, normalize_embeddings=True).tolist()

@@ -5,11 +5,12 @@ load_dotenv()
 
 MOONDREAM_API_KEY = os.getenv("MOONDREAM_API_KEY")
 TEXT_EMBED_MODEL = "all-MiniLM-L6-v2"
-FASHION_CLIP_MODEL = "patrickjohncyh/fashion-clip"
+CLIP_MODEL = "openai/clip-vit-base-patch32"
 
-IMAGES_DIR = r"\images_directory"
-CHROMA_DIR = r"\chromadb"
-COLLECTION_NAME = "image_captions"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+IMAGES_DIR = os.path.join(BASE_DIR, "data", "images")
+CHROMA_DIR = os.path.join(BASE_DIR, "data", "chroma_db")
+COLLECTION_NAME = "mirage_image_collection"
 
 TOP_N_CANDIDATES = 20   # candidates pulled before rerank
 CAPTION_WEIGHT = 0.4
