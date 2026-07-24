@@ -9,7 +9,6 @@ engine = QueryEngine()
 
 # Adding ZeroGPU decorator for HF spaces
 @spaces.GPU
-
 def search_interface(query, caption_weight, clip_weight, k):
     # Apply selected weights to configuration
     config.CAPTION_WEIGHT = float(caption_weight)
