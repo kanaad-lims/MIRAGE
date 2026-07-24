@@ -3,9 +3,6 @@ Contains all the embedding functions used in indexer and in retriever (for embed
 """
 
 import os
-# Force Hugging Face to run in offline mode using local cache
-os.environ["HF_HUB_OFFLINE"] = "1"
-os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
 from sentence_transformers import SentenceTransformer
 from transformers import CLIPProcessor, CLIPModel
