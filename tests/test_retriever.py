@@ -38,7 +38,7 @@ def run_test_retriever():
     #     print(f"Query: '{q}'")
     #     print("-" * 50)
     #     try:
-    #         results = engine.search(q, k=3)
+    #         results = engine.search_images(q, k=3)
     #         for rank, r in enumerate(results, 1):
     #             print(f"  {rank}. {r['image_path']} (score: {r['score']:.4f})")
     #             print(f"     Caption: {r['caption']}\n")
@@ -50,7 +50,7 @@ def run_test_retriever():
     print(f"SINGLE QUERY TEST: '{single_test_query}'")
     print("="*60)
     try:
-        results = engine.search(single_test_query, k=3)
+        results = engine.search_images(single_test_query, k=3)
         for rank, r in enumerate(results, 1):
             filename = os.path.basename(r['image_path'])
             print(f"\n[Rank {rank}] Filename: {filename}")

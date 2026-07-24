@@ -37,7 +37,7 @@ def main():
     engine = QueryEngine()
     
     try:
-        results = engine.search(query, k=5)
+        results = engine.search_images(query, k=5)
     except Exception as e:
         print(f"Error during search: {e}")
         return

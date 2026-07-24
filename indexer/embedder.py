@@ -28,7 +28,7 @@ def embed_image_clip(image_path: str) -> list[float]:
     feats = feats / feats.norm(dim=-1, keepdim=True)
     return feats.squeeze().tolist()
 
-def embed_text_clip(text: str) -> list[float]:
+def embed_query_text(text: str) -> list[float]:
     inputs = _clip_processor(text=[text], return_tensors="pt", padding=True)
     with torch.no_grad():
         feats = _clip_model.get_text_features(**inputs)
