@@ -1,3 +1,14 @@
+---
+title: MIRAGE
+emoji: 🌌
+colorFrom: yellow
+colorTo: indigo
+sdk: gradio
+sdk_version: 4.26.0
+app_file: app.py
+pinned: false
+---
+
 # 🌌 MIRAGE: Multimodal Image Retrieval & Attribute-Grounded Engine
 
 MIRAGE is an intelligent, open-vocabulary zero-shot image search engine built to retrieve specific images from a database using natural language queries. The system successfully solves the **compositional binding problem** (e.g., distinguishing "a red cup and a blue plate" from "a blue cup and a red plate") and matches visual assets based on objects, colors, locations, styling, and abstract vibes.
