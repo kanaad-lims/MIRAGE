@@ -7,6 +7,10 @@ import config
 # Initialize query engine
 engine = QueryEngine()
 
+@spaces.GPU
+def dummy_gpu_function():
+    return None
+
 # Custom CSS to force a unified dark theme and fix contrast issues
 custom_css = """
 body, .gradio-container { 
