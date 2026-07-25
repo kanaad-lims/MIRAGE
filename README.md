@@ -4,11 +4,8 @@
 MIRAGE is an intelligent, open-vocabulary zero-shot image search engine built to retrieve specific images from a database using natural language queries. The system successfully solves the **compositional binding problem** (e.g., distinguishing "a red cup and a blue plate" from "a blue cup and a red plate") and matches visual assets based on objects, colors, locations, styling, and abstract vibes.
 
 
-<div align="left">
+<div align="center">
   <img src="https://img.shields.io/github/actions/workflow/status/kanaad-lims/mirage/deploy.yml?branch=main&label=CI&logo=githubactions&style=flat-square" alt="CI Status" />
-  <a href="https://huggingface.co/spaces/kanaadlimaye/mirage">
-      <img src="https://img.shields.io/badge/🤗%20Hugging%20Face-Demo-yellow?style=flat-square" alt="Hugging Face Demo" />
-  </a>
   <img src="https://img.shields.io/github/stars/kanaad-lims/mirage?style=flat-square&logo=github" alt="GitHub Stars" />
   <img src="https://img.shields.io/github/forks/kanaad-lims/mirage?style=flat-square&logo=github" alt="GitHub Forks" />
   <img src="https://img.shields.io/github/issues/kanaad-lims/mirage?style=flat-square&logo=github" alt="Issues" />
