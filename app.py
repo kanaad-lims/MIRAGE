@@ -7,10 +7,34 @@ import config
 # Initialize query engine
 engine = QueryEngine()
 
-# Custom CSS to force text visibility in both light and dark mode
+# Custom CSS to force a unified dark theme and fix contrast issues
 custom_css = """
-.readable-title { color: var(--body-text-color) !important; text-align: center; }
-.readable-desc { color: var(--body-text-color-subdued) !important; text-align: center; margin-bottom: 20px; }
+body, .gradio-container { 
+    background-color: #0b0f19 !important; 
+    color: #f8fafc !important; 
+}
+h1, h2, h3, p, span, label, .readable-text { 
+    color: #f8fafc !important; 
+}
+.gradio-container {
+    border-radius: 12px;
+    padding: 20px;
+}
+/* Force inputs and panels to have a dark background */
+.input-background, textarea, input, .form, .gr-box {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border: 1px solid #334155 !important;
+}
+.gr-slider-input {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+/* Style the accordions and sliders */
+.gr-accordion, .gr-collapse {
+    border: 1px solid #334155 !important;
+    background-color: #111827 !important;
+}
 """
 
 @spaces.GPU
@@ -34,12 +58,20 @@ def search_interface(query, caption_weight, clip_weight, k):
         
     return gallery_items
 
-# Custom interface with CSS injection
+# Custom interface with CSS injection and forced dark mode class
 with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate"), css=custom_css) as demo:
+    # Force dark mode class on the document body on load
+    demo.load(js="""
+    () => {
+        document.body.classList.add('dark');
+        document.querySelector('.gradio-container').classList.add('dark');
+    }
+    """)
+    
     gr.HTML(
         """
-        <h1 class='readable-title' style='font-size: 2.2em; font-weight: 800; margin-top: 20px;'>🌌 MIRAGE: Multimodal Image Search Engine</h1>
-        <p class='readable-desc' style='font-size: 1.1em;'>Interactive playground for VLM dense captions fused with OpenAI CLIP visual reranking.</p>
+        <h1 style='font-size: 2.2em; font-weight: 800; text-align: center; color: #f8fafc; margin-top: 20px;'>🌌 MIRAGE: Multimodal Image Search Engine</h1>
+        <p style='font-size: 1.1em; text-align: center; color: #94a3b8; margin-bottom: 20px;'>Interactive playground for VLM dense captions fused with OpenAI CLIP visual reranking.</p>
         """
     )
     
@@ -48,7 +80,8 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate"), c
             q_input = gr.Textbox(
                 label="Search Query", 
                 placeholder="e.g., a yellow taxi in the city", 
-                lines=2
+                lines=2,
+                elem_classes="input-background"
             )
             
             with gr.Accordion("Search Weights & Tuning", open=True):
