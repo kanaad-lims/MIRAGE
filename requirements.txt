@@ -7,3 +7,4 @@ transformers
 pillow
 tqdm
 python-dotenv
+pydantic==2.10.6
