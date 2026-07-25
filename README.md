@@ -11,6 +11,9 @@ MIRAGE is an intelligent, open-vocabulary zero-shot image search engine built to
   <img src="https://img.shields.io/github/issues/kanaad-lims/mirage?style=flat-square&logo=github" alt="Issues" />
   <img src="https://img.shields.io/github/issues-pr/kanaad-lims/mirage?style=flat-square&logo=github" alt="Pull Requests" />
   <img src="https://img.shields.io/github/license/kanaad-lims/mirage?style=flat-square" alt="License" />
+  <a href="https://deepwiki.com/kanaad-lims/MIRAGE">
+    <img src="https://img.shields.io/badge/Docs-DeepWiki-4B32C3?style=flat-square&logo=readthedocs&logoColor=white" alt="DeepWiki Documentation" />
+  </a>
 
 </div>
 
