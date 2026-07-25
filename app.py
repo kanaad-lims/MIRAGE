@@ -37,7 +37,6 @@ h1, h2, h3, p, span, label, .readable-text {
 }
 """
 
-@spaces.GPU
 def search_interface(query, caption_weight, clip_weight, k):
     # Apply selected weights to configuration
     config.CAPTION_WEIGHT = float(caption_weight)
