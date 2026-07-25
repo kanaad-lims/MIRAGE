@@ -1,74 +1,46 @@
-import spaces
 import os
-import gradio as gr
+import streamlit as st
+from PIL import Image
 from retriever.query_engine import QueryEngine
 import config
 
-# Initialize query engine
-engine = QueryEngine()
+st.set_page_config(page_title="MIRAGE Search", page_icon="🌌", layout="wide")
 
-# Adding ZeroGPU decorator for HF spaces
-@spaces.GPU
-def search_interface(query, caption_weight, clip_weight, k):
-    # Apply selected weights to configuration
-    config.CAPTION_WEIGHT = float(caption_weight)
-    config.CLIP_WEIGHT = float(clip_weight)
-    
-    # Query the pre-built database
-    results = engine.search_images(query, k=int(k))
-    
-    # Format results as a list of (image_path, caption_label) for Gradio Gallery
-    gallery_items = []
-    for i, r in enumerate(results):
-        filename = os.path.basename(r['image_path'])
-        label = f"Rank {i+1} | Score: {r['score']:.3f} | {filename}"
-        gallery_items.append((r['image_path'], label))
-        
-    return gallery_items
+st.title("🌌 MIRAGE: Multimodal Image Search Engine")
+st.markdown("### Interactive playground for VLM dense captions fused with OpenAI CLIP visual reranking.")
 
-# Custom interface with sliders for score fusion weights
-with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate")) as demo:
-    gr.Markdown(
-        """
-        # 🌌 MIRAGE: Multimodal Image Search Engine
-        ### Interactive playground for VLM dense captions fused with OpenAI CLIP visual reranking.
-        """
-    )
-    
-    with gr.Row():
-        with gr.Column(scale=1):
-            q_input = gr.Textbox(
-                label="Search Query", 
-                placeholder="e.g., a yellow taxi in the city", 
-                lines=2
-            )
-            
-            with gr.Accordion("Search Weights & Tuning", open=True):
-                w_cap = gr.Slider(
-                    minimum=0.0, maximum=1.0, value=0.35, step=0.05, 
-                    label="Caption Semantic Weight"
-                )
-                w_clip = gr.Slider(
-                    minimum=0.0, maximum=1.0, value=0.65, step=0.05, 
-                    label="CLIP Visual Weight"
-                )
-                k_results = gr.Slider(
-                    minimum=1, maximum=5, value=3, step=1, 
-                    label="Number of Matches (K)"
-                )
-                
-            btn = gr.Button("🔍 Search Database", variant="primary")
-            
-        with gr.Column(scale=2):
-            gallery = gr.Gallery(
-                label="Retrieved Results", 
-                columns=[2], 
-                rows=[2], 
-                height="auto"
-            )
-            
-    btn.click(search_interface, [q_input, w_cap, w_clip, k_results], gallery)
+@st.cache_resource
+def load_engine():
+    return QueryEngine()
 
-# Launch app
-if __name__ == "__main__":
-    demo.launch()
+engine = load_engine()
+
+with st.sidebar:
+    st.header("⚙️ Search Configuration")
+    query = st.text_input("Search Query", placeholder="e.g., a yellow taxi in the city")
+    caption_weight = st.slider("Caption Semantic Weight", 0.0, 1.0, 0.35, 0.05)
+    clip_weight = st.slider("CLIP Visual Weight", 0.0, 1.0, 0.65, 0.05)
+    k = st.slider("Number of Matches (K)", 1, 5, 3)
+    search_btn = st.button("🔍 Search Database", type="primary", use_container_width=True)
+
+if search_btn and query:
+    config.CAPTION_WEIGHT = caption_weight
+    config.CLIP_WEIGHT = clip_weight
+
+    with st.spinner("Searching..."):
+        results = engine.search_images(query, k=k)
+
+    if not results:
+        st.warning("No results found. Try a different query!")
+    else:
+        st.success(f"Found {len(results)} matches!")
+        cols = st.columns(len(results))
+        for i, (col, r) in enumerate(zip(cols, results)):
+            with col:
+                img = Image.open(r['image_path'])
+                st.image(img, use_column_width=True)
+                st.caption(f"**Rank {i+1}** | Score: `{r['score']:.3f}`\n\n`{os.path.basename(r['image_path'])}`")
+elif search_btn and not query:
+    st.error("Please enter a search query!")
+else:
+    st.info("👈 Enter a query in the sidebar and click **Search Database** to get started!")
