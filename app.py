@@ -42,24 +42,25 @@ h1, h2, h3, p, span, label, .readable-text {
 """
 
 def search_interface(query, caption_weight, clip_weight, k):
-    # Apply selected weights to configuration
     config.CAPTION_WEIGHT = float(caption_weight)
     config.CLIP_WEIGHT = float(clip_weight)
     
-    # Query the pre-built database
     results = engine.search_images(query, k=int(k))
     
-    # Format results as a list of (image_path, caption_label) for Gradio Gallery
     gallery_items = []
     for i, r in enumerate(results):
-        # Extract just the filename to make the path relative and platform-independent
-        filename = os.path.basename(r['image_path'])
+        # Normalize Windows backslashes to Linux forward slashes
+        clean_path = r['image_path'].replace('\\', '/')
+        filename = os.path.basename(clean_path)
+        
+        # Build the correct relative path for the Linux server
         relative_path = os.path.join("data", "images", filename)
         
         label = f"Rank {i+1} | Score: {r['score']:.3f} | {filename}"
         gallery_items.append((relative_path, label))
         
     return gallery_items
+
 
 # Custom interface with CSS injection and forced dark mode class
 with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate"), css=custom_css) as demo:
