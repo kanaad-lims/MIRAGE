@@ -1,4 +1,4 @@
-huggingface_hub==0.24.0
+gradio>=4.44.1
 moondream
 torch
 chromadb
@@ -7,4 +7,3 @@ transformers
 pillow
 tqdm
 python-dotenv
-gradio
