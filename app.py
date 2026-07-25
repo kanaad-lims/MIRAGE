@@ -7,7 +7,12 @@ import config
 # Initialize query engine
 engine = QueryEngine()
 
-# Adding ZeroGPU decorator for HF spaces
+# Custom CSS to force text visibility in both light and dark mode
+custom_css = """
+.readable-title { color: var(--body-text-color) !important; text-align: center; }
+.readable-desc { color: var(--body-text-color-subdued) !important; text-align: center; margin-bottom: 20px; }
+"""
+
 @spaces.GPU
 def search_interface(query, caption_weight, clip_weight, k):
     # Apply selected weights to configuration
@@ -20,18 +25,21 @@ def search_interface(query, caption_weight, clip_weight, k):
     # Format results as a list of (image_path, caption_label) for Gradio Gallery
     gallery_items = []
     for i, r in enumerate(results):
+        # Extract just the filename to make the path relative and platform-independent
         filename = os.path.basename(r['image_path'])
+        relative_path = os.path.join("data", "images", filename)
+        
         label = f"Rank {i+1} | Score: {r['score']:.3f} | {filename}"
-        gallery_items.append((r['image_path'], label))
+        gallery_items.append((relative_path, label))
         
     return gallery_items
 
-# Custom interface with sliders for score fusion weights
-with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate")) as demo:
-    gr.Markdown(
+# Custom interface with CSS injection
+with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate"), css=custom_css) as demo:
+    gr.HTML(
         """
-        # 🌌 MIRAGE: Multimodal Image Search Engine
-        ### Interactive playground for VLM dense captions fused with OpenAI CLIP visual reranking.
+        <h1 class='readable-title' style='font-size: 2.2em; font-weight: 800; margin-top: 20px;'>🌌 MIRAGE: Multimodal Image Search Engine</h1>
+        <p class='readable-desc' style='font-size: 1.1em;'>Interactive playground for VLM dense captions fused with OpenAI CLIP visual reranking.</p>
         """
     )
     
