@@ -62,8 +62,8 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="amber", neutral_hue="slate")) a
         with gr.Column(scale=2):
             gallery = gr.Gallery(
                 label="Retrieved Results", 
-                columns=[2], 
-                rows=[2], 
+                columns=2, 
+                rows=2, 
                 height="auto"
             )
             
