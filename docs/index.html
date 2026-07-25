@@ -492,7 +492,7 @@
             <div class="traffic-lights">
                 <span class="tl tl-red"></span>
                 <span class="tl tl-yellow"></span>
-                <span class="tl tl-green"></span>
+                <span class="tl-green"></span>
             </div>
             <div class="app-title"><i class="fa-regular fa-file-lines"></i> mirage — README.md</div>
             <div class="app-titlebar-spacer"></div>
@@ -509,9 +509,8 @@
                     <li><a href="#features" data-nav>Key Features</a></li>
                     <li><a href="#architecture" data-nav>Architecture</a></li>
                     <li><a href="#implementation" data-nav>Implementation</a></li>
+                    <li><a href="#demo" data-nav>Playground</a></li>
                     <li><a href="#get-started" data-nav>Getting Started</a></li>
-                    <li><a href="#structure" data-nav>Project Structure</a></li>
-                    <li><a href="#scalability" data-nav>Scalability Analysis</a></li>
                     <li><a href="https://github.com/kanaad-lims/mirage.git" class="github-btn"><i class="fa-brands fa-github"></i> Star on GitHub</a></li>
                 </ul>
             </div>
@@ -529,6 +528,7 @@
                     <div class="badge"><i class="fa-solid fa-brain"></i> Moondream 2 VLM</div>
                     <div class="badge"><i class="fa-solid fa-eye"></i> OpenAI CLIP</div>
                     <div class="badge"><i class="fa-solid fa-database"></i> ChromaDB (HNSW)</div>
+                    <div class="badge"><i class="fa-solid fa-certificate"></i> MIT License</div>
                 </div>
             </section>
 
@@ -704,11 +704,64 @@
                                     <p>The final rank is determined using a weighted sum of the caption similarity and the CLIP visual similarity:</p>
                                     <div class="formula-box">
                                         $$Score = (w_{caption} \times Sim_{caption}) + (w_{clip} \times Sim_{clip})$$
-                                        $$[Sim - Similarity]$$  
                                     </div>
+                                    <p style="font-size: 0.85rem; opacity: 0.8; text-align: center;">
+                                        (Default weights are optimized at $w_{caption} = 0.3$ and $w_{clip} = 0.7$)
+                                    </p>
                                 </div>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Demo Section -->
+            <section id="demo" style="margin-bottom: 6rem;">
+                <span class="section-eyebrow reveal">§ Live Demo</span>
+                <h3 class="section-title reveal"><i class="fa-solid fa-play" style="color: var(--accent);"></i> Interactive Playground</h3>
+                
+                <div class="stack-layout">
+                    <div class="card reveal" style="padding: 1.5rem 1.5rem 0 1.5rem; overflow: hidden;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem;">
+                            <div style="display: flex; align-items: center;">
+                                <span style="font-size: 1.75rem; margin-right: 0.75rem;">🤗</span>
+                                <h4 style="margin: 0; font-size: 1.25rem; font-family: var(--font-title); font-weight: 600;">Hugging Face Space</h4>
+                            </div>
+                            <span style="font-size: 0.75rem; background: var(--accent-dim); color: var(--accent); padding: 0.35rem 0.85rem; border-radius: 2rem; border: 1px solid rgba(242, 163, 61, 0.25); font-weight: 600; font-family: var(--font-mono);">
+                                Live Demo
+                            </span>
+                        </div>
+
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+                            Test the score fusion pipeline live. Adjust the sliders to prioritize either detailed semantic captions (Moondream VLM) or raw visual feature alignment (OpenAI CLIP).
+                        </p>
+
+                        <!-- Interactive macOS-style Window Frame -->
+                        <div class="window" style="margin-bottom: -1px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+                            <div class="window-bar">
+                                <div class="window-dots">
+                                    <span style="background:#ef4444;"></span>
+                                    <span style="background:#eab308;"></span>
+                                    <span style="background:#22c55e;"></span>
+                                </div>
+                                <div class="window-title" style="text-transform: lowercase;">huggingface.co/spaces/kanaadlimaye/mirage/embed</div>
+                                <div style="width: 42px;"></div> <!-- Spacer to center title -->
+                            </div>
+                            
+                            <!-- Embedded IFrame -->
+                            <div class="window-body" style="padding: 0; height: 750px; background: #0b0f19;">
+                                <iframe 
+                                    src="https://huggingface.co/spaces/kanaadlimaye/mirage/embed" 
+                                    width="100%" 
+                                    height="100%" 
+                                    frameborder="0"
+                                    allowtransparency="true"
+                                    style="border: none;"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -834,15 +887,6 @@ pip install -r requirements.txt</code>
                                 <p>CLIP visual similarity math is strictly bound to the Top-N (e.g. 20) candidates retrieved in Stage 1, eliminating the need to evaluate 1 million images at search time.</p>
                             </div>
                         </li>
-                         <li class="step-item">
-                            <div class="step-num"><i class="fa-solid fa-star" style="font-size: 0.85rem;"></i></div>
-                            <div class="step-content">
-                                <h4>O(1) Offline Precomputation</h4>
-                                <p>Generating captions and image vectors is a one-time offline
-                                    process. It runs during ingestion, and once stored, requires zero real-time CPU/GPU
-                                    computation.</p>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </section>
@@ -852,7 +896,7 @@ pip install -r requirements.txt</code>
         <footer>
             <div class="container">
                 <p>MIRAGE is an open-source project created by <a href="https://github.com/kanaad-lims">Kanaad Limaye</a>.</p>
-                <p style="margin-top: 0.5rem; font-size: 0.78rem; opacity: 0.7;">© 2026 MIRAGE.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.78rem; opacity: 0.7;">© 2026 MIRAGE. Released under the MIT License.</p>
             </div>
         </footer>
     </div>
